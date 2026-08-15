@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "trinkets"
+version = "0.1.0"
+description = "A collection of small, self-contained developer utilities."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Vijay Chakravarthy" }]
+keywords = ["cli", "utilities", "git", "static-analysis"]
+
+# Core is deliberately stdlib-only so the tools run anywhere without a venv.
+dependencies = []
+
+[project.optional-dependencies]
+# Improves docker-compose parsing accuracy; everything degrades gracefully without it.
+yaml = ["PyYAML>=6.0"]
+dev = ["pytest>=7.4", "pytest-cov>=4.1", "ruff>=0.4"]
+
+[project.scripts]
+trinkets = "trinkets.cli:main"
+repostats = "trinkets.repostats.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/trinkets"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
