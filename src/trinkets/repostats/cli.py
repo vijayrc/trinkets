@@ -10,13 +10,14 @@ from pathlib import Path
 from trinkets import __version__
 from trinkets.repostats.analyzer import analyse_repository
 from trinkets.repostats.gitio import GitError
-from trinkets.repostats.render import render_json, render_markdown
+from trinkets.repostats.render import render_json, render_markdown, render_terminal
 
 EPILOG = """\
 examples:
   repostats                          analyse the current directory
   repostats ~/code/myapp             analyse another repository
   repostats -f json -o report.json   emit machine-readable output
+  repostats -f terminal              print a colourised report to the terminal
   repostats --run-coverage           execute the repo's pytest suite to measure coverage
 
 note:
@@ -37,11 +38,16 @@ def build_parser() -> argparse.ArgumentParser:
         "path", nargs="?", default=".", help="repository to analyse (default: current directory)"
     )
     parser.add_argument(
-        "-f", "--format", choices=("markdown", "json"), default="markdown",
-        help="output format (default: markdown)",
+        "-f", "--format", choices=("markdown", "json", "terminal"), default="markdown",
+        help="output format (default: markdown); 'terminal' renders the same report "
+             "with ANSI colour for reading on screen",
     )
     parser.add_argument(
         "-o", "--output", metavar="FILE", help="write to FILE instead of stdout",
+    )
+    parser.add_argument(
+        "--color", choices=("auto", "always", "never"), default="auto",
+        help="colour control for --format terminal (default: auto)",
     )
     parser.add_argument(
         "--max-commits", type=int, default=None, metavar="N",
@@ -85,7 +91,15 @@ def main(argv: Sequence[str] | None = None) -> int:
         print("repostats: interrupted", file=sys.stderr)
         return 130
 
-    rendered = render_json(report) if args.format == "json" else render_markdown(report)
+    if args.format == "json":
+        rendered = render_json(report)
+    elif args.format == "terminal":
+        use_color = args.color == "always" or (
+            args.color == "auto" and not args.output and sys.stdout.isatty()
+        )
+        rendered = render_terminal(report, color=use_color)
+    else:
+        rendered = render_markdown(report)
 
     if args.output:
         output_path = Path(args.output).expanduser()
