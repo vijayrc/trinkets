@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>trinkets — repostats</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #0f1115; --panel: #171a21; --border: #2a2f3a; --text: #e5e7eb;
+  --muted: #9aa3b2; --accent: #6366f1; --link: #7dd3fc; --code-bg: #11141a;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f8fafc; --panel: #ffffff; --border: #e2e8f0; --text: #0f172a;
+    --muted: #64748b; --accent: #4f46e5; --link: #0369a1; --code-bg: #f1f5f9;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 2rem 1.25rem 4rem; background: var(--bg); color: var(--text);
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+main { max-width: 980px; margin: 0 auto; }
+h1 { font-size: 1.7rem; margin: 0 0 0.35rem; }
+h2 {
+  font-size: 1.25rem; margin: 2.2rem 0 0.8rem;
+  padding-top: 0.6rem; border-top: 1px solid var(--border);
+}
+h3 { font-size: 1.02rem; margin: 1.4rem 0 0.6rem; color: var(--muted); }
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.path {
+  color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.85rem; word-break: break-all;
+}
+.crumbs { color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
+.crumbs a { margin-right: 0.15rem; }
+table { border-collapse: collapse; width: 100%; margin: 0.6rem 0 1rem; font-size: 0.92rem; }
+th, td {
+  border: 1px solid var(--border); padding: 0.4rem 0.65rem;
+  text-align: left; vertical-align: top;
+}
+th { background: var(--panel); font-weight: 600; }
+tr:nth-child(even) td { background: color-mix(in srgb, var(--panel) 55%, transparent); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88em; }
+code { background: var(--code-bg); border-radius: 3px; padding: 0.05em 0.35em; }
+a.filelink code { color: var(--link); }
+.card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+  padding: 1rem 1.2rem; margin: 0.8rem 0;
+}
+.badge {
+  display: inline-block; font-size: 0.72rem; padding: 0.12rem 0.55rem; border-radius: 999px;
+  border: 1px solid var(--border); color: var(--muted);
+}
+.conf-measured { color: #22c55e; border-color: #22c55e55; }
+.conf-high { color: #38bdf8; border-color: #38bdf855; }
+.conf-medium { color: #f59e0b; border-color: #f59e0b55; }
+.conf-low { color: #f87171; border-color: #f8717155; }
+.chip {
+  display: inline-block; background: var(--code-bg); border: 1px solid var(--border);
+  border-radius: 6px; padding: 0.08rem 0.5rem; margin: 0.1rem 0.25rem 0.1rem 0;
+  font-size: 0.85rem;
+}
+blockquote {
+  margin: 0.6rem 0; padding: 0.4rem 0.9rem; border-left: 3px solid var(--accent);
+  color: var(--muted); background: var(--panel); border-radius: 0 6px 6px 0;
+}
+.callout {
+  padding: 0.6rem 0.9rem; border-radius: 8px; background: #f59e0b1a;
+  border: 1px solid #f59e0b55; margin: 0.8rem 0;
+}
+.callout ul { margin: 0.3rem 0 0; padding-left: 1.2rem; }
+details { margin: 0.6rem 0; }
+summary { cursor: pointer; color: var(--muted); }
+.bars { margin: 0.6rem 0 1rem; }
+.bar-row {
+  display: flex; align-items: center; gap: 0.6rem; margin: 0.25rem 0; font-size: 0.85rem;
+}
+.bar-label {
+  width: 9rem; flex: none; color: var(--muted); text-align: right;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.bar-track {
+  flex: 1; background: var(--code-bg); border-radius: 4px; overflow: hidden; height: 0.85rem;
+}
+.bar-fill { height: 100%; border-radius: 4px; }
+.bar-value { flex: none; width: 4.5rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.stack {
+  display: flex; height: 0.9rem; border-radius: 5px; overflow: hidden; margin: 0.5rem 0 0.9rem;
+}
+.legend {
+  display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; font-size: 0.82rem;
+  color: var(--muted); margin-bottom: 0.8rem;
+}
+.legend .swatch {
+  display: inline-block; width: 0.65em; height: 0.65em; border-radius: 2px;
+  margin-right: 0.35em; vertical-align: middle;
+}
+footer { margin-top: 3rem; color: var(--muted); font-size: 0.82rem; }
+</style>
+</head>
+<body>
+<main>
+<div class="crumbs"><a href="../index.html">&larr; all repositories</a></div>
+<h1>Repository report: trinkets</h1>
+<div class="path">/Users/vijaychakravarthy/Projects/trinkets</div>
+<table><tbody><tr><td>Generated</td><td>2026-08-16T09:06:56+00:00</td></tr><tr><td>Analyser</td><td>repostats 0.1.0</td></tr><tr><td>Branch</td><td><code>v1</code></td></tr><tr><td>HEAD</td><td><code>db95f503fcb8</code></td></tr><tr><td>Remote</td><td>git@github.com:vijayrc/trinkets.git</td></tr></tbody></table>
+<h2>1. Programming languages</h2>
+<div class="stack"><div style="width:59.93%;background:#6366f1"></div><div style="width:40.07%;background:#22c55e"></div></div><div class="legend"><span><span class="swatch" style="background:#6366f1"></span>HTML</span><span><span class="swatch" style="background:#22c55e"></span>Python</span></div>
+<table><thead><tr><th>Language</th><th class="num">Files</th><th class="num">Code lines</th><th class="num">Share</th><th class="num">Comments</th><th class="num">Blank</th></tr></thead><tbody><tr><td>HTML</td><td class="num">45</td><td class="num">5,475</td><td class="num">59.9%</td><td class="num">0</td><td class="num">49</td></tr><tr><td>Python</td><td class="num">27</td><td class="num">3,661</td><td class="num">40.1%</td><td class="num">797</td><td class="num">786</td></tr></tbody></table>
+<p><strong>Primary language:</strong> HTML (59.9% of source lines).</p>
+<p><strong>Config / markup files:</strong> Markdown (2), Unknown (1), TOML (1).</p>
+<h2>2. Build tooling and project model</h2>
+<table><thead><tr><th>Aspect</th><th>Finding</th></tr></thead><tbody><tr><td>Build tools</td><td>Hatch</td></tr><tr><td>Package managers</td><td>none detected</td></tr><tr><td>PEP 517 backend</td><td>Hatch</td></tr><tr><td>Project model</td><td>single project</td></tr><tr><td>CI systems</td><td>none detected</td></tr><tr><td>Containerised</td><td>no</td></tr></tbody></table>
+<p><strong>Manifests found:</strong> <a class="filelink" href="files/pyproject.toml.html"><code>pyproject.toml</code></a></p>
+<h2>3. Purpose and overall logic <span class="badge conf-high">high confidence</span></h2>
+<p>trinkets — A collection of small, self-contained developer utilities. It looks like a http service / web api and cli tool.</p>
+<p><strong>Declared description:</strong> A collection of small, self-contained developer utilities.</p>
+<p><strong>Detected project kind(s):</strong> <span class="chip">HTTP service / web API</span><span class="chip">CLI tool</span></p>
+<p><strong>Recurring domain terms:</strong> <span class="chip">repostats</span><span class="chip">report</span><span class="chip">hello</span><span class="chip">files</span><span class="chip">tenet</span><span class="chip">trinkets</span><span class="chip">probes</span><span class="chip">pyproject</span><span class="chip">toml</span><span class="chip">strands</span><span class="chip">agent</span><span class="chip">playwright</span></p>
+<details><summary>Evidence</summary><ul><li>Read project README — <code>README.md</code></li><li>Package metadata declares a description</li><li>Found 5 HTTP route declarations</li><li>Package metadata declares an executable entry point</li><li>CLI framework referenced in source: argparse</li></ul></details>
+<h2>4. Contributors and commit timeframe</h2>
+<table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody><tr><td>Total commits (excl. merges)</td><td>5</td></tr><tr><td>Distinct authors</td><td>2</td></tr><tr><td>Active span</td><td>2026-08-15 → 2026-08-16</td></tr><tr><td>Days with commits</td><td>2</td></tr><tr><td>Bus factor</td><td>1</td></tr></tbody></table>
+<p><em>1 author(s) account for at least half of all commits; the single largest contributor made 80% of them.</em></p>
+<h3>Top contributors</h3>
+<table><thead><tr><th>Author</th><th class="num">Commits</th><th class="num">Share</th><th class="num">Insertions</th><th class="num">Deletions</th><th>Active</th></tr></thead><tbody><tr><td>Vijay Chakravarthy</td><td class="num">4</td><td class="num">80.0%</td><td class="num">5,539</td><td class="num">5</td><td>2026-08-15 → 2026-08-16</td></tr><tr><td>Vijay Chakravarthy</td><td class="num">1</td><td class="num">20.0%</td><td class="num">218</td><td class="num">0</td><td>2026-08-15 → 2026-08-15</td></tr></tbody></table>
+<h3>Commits by year</h3>
+<div class="bars"><div class="bar-row"><div class="bar-label" title="2026">2026</div><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#6366f1"></div></div><div class="bar-value">5</div></div></div>
+<h2>5. Flow: entry to persistence <span class="badge conf-medium">medium confidence — inferred</span></h2>
+<blockquote>Derived from directory/filename conventions plus declared dependencies. This is the intended architecture as the layout implies it, not a verified call graph.</blockquote>
+<pre class="mono">flowchart LR
+    caller([&quot;HTTP client&quot;])
+    entry[&quot;Entry point&lt;br/&gt;src/trinkets/__main__.py&lt;br/&gt;src/trinkets/cli.py&quot;]
+    controller[&quot;Controllers / routes&lt;br/&gt;(1 file(s))&quot;]
+    model[&quot;Models / entities&lt;br/&gt;(3 file(s))&quot;]
+    db1[(&quot;PostgreSQL&quot;)]
+    cache2[(&quot;Redis&quot;)]
+    external([&quot;External APIs&lt;br/&gt;(2 adapter file(s))&quot;])
+
+    caller --&gt; entry
+    entry --&gt; controller
+    controller --&gt;|maps to| model
+    controller --&gt;|database| db1
+    controller --&gt;|cache| cache2
+    controller --&gt;|calls out| external
+    controller --&gt;|response| caller
+
+    style caller fill:#eef2ff,stroke:#4f46e5,color:#1e1b4b
+    style entry fill:#ecfdf5,stroke:#059669,color:#064e3b
+    style controller fill:#f0f9ff,stroke:#0284c7,color:#0c4a6e
+    style model fill:#fdf4ff,stroke:#a21caf,color:#4a044e
+    style db1 fill:#fef2f2,stroke:#dc2626,color:#450a0a
+    style cache2 fill:#fff1f2,stroke:#e11d48,color:#4c0519
+    style external fill:#eef2ff,stroke:#4f46e5,color:#1e1b4b</pre>
+<details><summary>How each node was identified</summary><ul><li><strong>HTTP client</strong><ul><li>5 route(s) declared</li></ul></li><li><strong>Entry point src/trinkets/__main__.py src/trinkets/cli.py</strong><ul><li>Entry point — <code>src/trinkets/__main__.py</code></li><li>Entry point — <code>src/trinkets/cli.py</code></li><li>Entry point — <code>src/trinkets/repostats/cli.py</code></li></ul></li><li><strong>Controllers / routes (1 file(s))</strong><ul><li>Matched by path convention — <code>repostats-report/hello-ai/files/hello-rag/endpoints.py.html</code></li></ul></li><li><strong>Models / entities (3 file(s))</strong><ul><li>Matched by path convention — <code>repostats-report/tenet/files/src/tenet/models/__init__.py.html</code></li><li>Matched by path convention — <code>repostats-report/tenet/files/src/tenet/models/config.py.html</code></li><li>Matched by path convention — <code>src/trinkets/repostats/models.py</code></li></ul></li><li><strong>PostgreSQL</strong><ul><li>Declared dependency implying PostgreSQL — <code>tests/test_repostats.py</code></li></ul></li><li><strong>Redis</strong><ul><li>Declared dependency implying Redis — <code>tests/test_repostats.py</code></li></ul></li><li><strong>External APIs (2 adapter file(s))</strong><ul><li>Adapter/client module — <code>repostats-report/hello-ai/files/hello-mcp/mcp-client/client.py.html</code></li><li>Adapter/client module — <code>repostats-report/hello-ai/files/hello-mcp/mcp-client/pyproject.toml.html</code></li></ul></li></ul></details>
+<h2>6. External dependencies and infrastructure</h2>
+<h3>Systems this code talks to</h3>
+<table><thead><tr><th>Category</th><th>Systems</th></tr></thead><tbody><tr><td>Database</td><td><span class="chip">PostgreSQL</span></td></tr><tr><td>Cache</td><td><span class="chip">Redis</span></td></tr><tr><td>Testing</td><td><span class="chip">pytest</span><span class="chip">pytest-cov</span></td></tr></tbody></table>
+<h3>Infrastructure evidence</h3>
+<table><thead><tr><th>System</th><th>Category</th><th>Evidence</th><th>Source</th></tr></thead><tbody><tr><td>PostgreSQL</td><td>database</td><td>inferred from import statements (not found in any manifest)</td><td><a class="filelink" href="files/tests/test_repostats.py.html"><code>tests/test_repostats.py</code></a></td></tr><tr><td>Redis</td><td>cache</td><td>inferred from import statements (not found in any manifest)</td><td><a class="filelink" href="files/tests/test_repostats.py.html"><code>tests/test_repostats.py</code></a></td></tr></tbody></table>
+<p><strong>Declared dependencies:</strong> 4 across all manifests.</p>
+<details><summary>Classified declared dependencies</summary><table><thead><tr><th>Package</th><th>Version</th><th>Category</th><th>Implies</th><th>Manifest</th></tr></thead><tbody><tr><td><code>pytest</code></td><td>—</td><td>testing</td><td>pytest</td><td><a class="filelink" href="files/pyproject.toml.html"><code>pyproject.toml</code></a></td></tr><tr><td><code>pytest-cov</code></td><td>—</td><td>testing</td><td>pytest-cov</td><td><a class="filelink" href="files/pyproject.toml.html"><code>pyproject.toml</code></a></td></tr></tbody></table></details>
+<h2>7. Size and structure</h2>
+<table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody><tr><td>Files analysed</td><td>76</td></tr><tr><td>Files skipped (binary, vendored, generated)</td><td>0</td></tr><tr><td>Total lines</td><td>11,276</td></tr><tr><td>Code lines</td><td>9,534</td></tr><tr><td>Comment lines</td><td>799</td></tr><tr><td>Blank lines</td><td>943</td></tr><tr><td>Comment ratio</td><td>7.7%</td></tr><tr><td>Classes / types</td><td>20</td></tr><tr><td>Functions / methods</td><td>159</td></tr><tr><td>HTTP endpoints</td><td>5</td></tr><tr><td>Repository size (analysed)</td><td>704.4 KB</td></tr></tbody></table>
+<h3>API endpoints</h3>
+<table><thead><tr><th>Method</th><th>Route</th><th>Location</th><th>Detected as</th></tr></thead><tbody><tr><td><code>GET</code></td><td><code>/orders</code></td><td><a class="filelink" href="files/tests/test_repostats.py.html#L22"><code>tests/test_repostats.py:22</code></a></td><td>Flask route</td></tr><tr><td><code>POST</code></td><td><code>/orders</code></td><td><a class="filelink" href="files/tests/test_repostats.py.html#L27"><code>tests/test_repostats.py:27</code></a></td><td>Flask route</td></tr><tr><td><code>GET</code></td><td><code>/ghost</code></td><td><a class="filelink" href="files/tests/test_repostats.py.html#L184"><code>tests/test_repostats.py:184</code></a></td><td>Flask route</td></tr><tr><td><code>GET</code></td><td><code>/real</code></td><td><a class="filelink" href="files/tests/test_repostats.py.html#L185"><code>tests/test_repostats.py:185</code></a></td><td>Flask route</td></tr><tr><td><code>GET</code></td><td><code>/x</code></td><td><a class="filelink" href="files/tests/test_repostats.py.html#L194"><code>tests/test_repostats.py:194</code></a></td><td>Python decorator</td></tr></tbody></table>
+<h3>Declarations by language</h3>
+<table><thead><tr><th>Language</th><th class="num">Classes / types</th><th class="num">Functions</th></tr></thead><tbody><tr><td>Python</td><td class="num">20</td><td class="num">159</td></tr></tbody></table>
+<h3>Largest source files</h3>
+<div class="bars"><div class="bar-row"><div class="bar-label" title="src/trinkets/repostats/render/html.py"><a class="filelink" href="files/src/trinkets/repostats/render/html.py.html">src/trinkets/repostats/render/html.py</a></div><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#6366f1"></div></div><div class="bar-value">661</div></div><div class="bar-row"><div class="bar-label" title="src/trinkets/repostats/knowledge.py"><a class="filelink" href="files/src/trinkets/repostats/knowledge.py.html">src/trinkets/repostats/knowledge.py</a></div><div class="bar-track"><div class="bar-fill" style="width:61.7%;background:#22c55e"></div></div><div class="bar-value">408</div></div><div class="bar-row"><div class="bar-label" title="src/trinkets/repostats/render/markdown.py"><a class="filelink" href="files/src/trinkets/repostats/render/markdown.py.html">src/trinkets/repostats/render/markdown.py</a></div><div class="bar-track"><div class="bar-fill" style="width:56.1%;background:#f59e0b"></div></div><div class="bar-value">371</div></div><div class="bar-row"><div class="bar-label" title="tests/test_repostats.py"><a class="filelink" href="files/tests/test_repostats.py.html">tests/test_repostats.py</a></div><div class="bar-track"><div class="bar-fill" style="width:54.0%;background:#ec4899"></div></div><div class="bar-value">357</div></div><div class="bar-row"><div class="bar-label" title="src/trinkets/repostats/probes/flow.py"><a class="filelink" href="files/src/trinkets/repostats/probes/flow.py.html">src/trinkets/repostats/probes/flow.py</a></div><div class="bar-track"><div class="bar-fill" style="width:52.3%;background:#06b6d4"></div></div><div class="bar-value">346</div></div><div class="bar-row"><div class="bar-label" title="src/trinkets/repostats/probes/dependencies.py"><a class="filelink" href="files/src/trinkets/repostats/probes/dependencies.py.html">src/trinkets/repostats/probes/dependencies.py</a></div><div class="bar-track"><div class="bar-fill" style="width:49.6%;background:#a855f7"></div></div><div class="bar-value">328</div></div><div class="bar-row"><div class="bar-label" title="src/trinkets/repostats/probes/codestats.py"><a class="filelink" href="files/src/trinkets/repostats/probes/codestats.py.html">src/trinkets/repostats/probes/codestats.py</a></div><div class="bar-track"><div class="bar-fill" style="width:47.8%;background:#ef4444"></div></div><div class="bar-value">316</div></div><div class="bar-row"><div class="bar-label" title="src/trinkets/repostats/probes/testing.py"><a class="filelink" href="files/src/trinkets/repostats/probes/testing.py.html">src/trinkets/repostats/probes/testing.py</a></div><div class="bar-track"><div class="bar-fill" style="width:43.0%;background:#14b8a6"></div></div><div class="bar-value">284</div></div><div class="bar-row"><div class="bar-label" title="src/trinkets/repostats/probes/purpose.py"><a class="filelink" href="files/src/trinkets/repostats/probes/purpose.py.html">src/trinkets/repostats/probes/purpose.py</a></div><div class="bar-track"><div class="bar-fill" style="width:40.8%;background:#84cc16"></div></div><div class="bar-value">270</div></div><div class="bar-row"><div class="bar-label" title="src/trinkets/repostats/probes/build.py"><a class="filelink" href="files/src/trinkets/repostats/probes/build.py.html">src/trinkets/repostats/probes/build.py</a></div><div class="bar-track"><div class="bar-fill" style="width:33.7%;background:#3b82f6"></div></div><div class="bar-value">223</div></div></div>
+<h2>8. Testing and coverage</h2>
+<table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody><tr><td>Test frameworks</td><td>Playwright, pytest, pytest-cov, unittest</td></tr><tr><td>Coverage tooling configured</td><td>none</td></tr><tr><td>Test files</td><td>8</td></tr><tr><td>Source files (non-test)</td><td>64</td></tr><tr><td>Test-to-source file ratio</td><td>0.12</td></tr><tr><td>Test functions / cases</td><td>27</td></tr><tr><td>Lines of test code</td><td>983</td></tr><tr><td>Line coverage</td><td>not measured</td></tr></tbody></table>
+<blockquote>No coverage report or coverage tooling found. Coverage is not measured here because doing so means executing the repository&#x27;s test suite.</blockquote>
+<footer>Sections 3 and 5 are inferred from naming conventions, package metadata and declared dependencies — check the evidence blocks before relying on them.</footer>
+</main>
+</body>
+</html>

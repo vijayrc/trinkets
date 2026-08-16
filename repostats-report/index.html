@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repository scan: Projects — repostats</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #0f1115; --panel: #171a21; --border: #2a2f3a; --text: #e5e7eb;
+  --muted: #9aa3b2; --accent: #6366f1; --link: #7dd3fc; --code-bg: #11141a;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f8fafc; --panel: #ffffff; --border: #e2e8f0; --text: #0f172a;
+    --muted: #64748b; --accent: #4f46e5; --link: #0369a1; --code-bg: #f1f5f9;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 2rem 1.25rem 4rem; background: var(--bg); color: var(--text);
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+main { max-width: 980px; margin: 0 auto; }
+h1 { font-size: 1.7rem; margin: 0 0 0.35rem; }
+h2 {
+  font-size: 1.25rem; margin: 2.2rem 0 0.8rem;
+  padding-top: 0.6rem; border-top: 1px solid var(--border);
+}
+h3 { font-size: 1.02rem; margin: 1.4rem 0 0.6rem; color: var(--muted); }
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.path {
+  color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.85rem; word-break: break-all;
+}
+.crumbs { color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
+.crumbs a { margin-right: 0.15rem; }
+table { border-collapse: collapse; width: 100%; margin: 0.6rem 0 1rem; font-size: 0.92rem; }
+th, td {
+  border: 1px solid var(--border); padding: 0.4rem 0.65rem;
+  text-align: left; vertical-align: top;
+}
+th { background: var(--panel); font-weight: 600; }
+tr:nth-child(even) td { background: color-mix(in srgb, var(--panel) 55%, transparent); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88em; }
+code { background: var(--code-bg); border-radius: 3px; padding: 0.05em 0.35em; }
+a.filelink code { color: var(--link); }
+.card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+  padding: 1rem 1.2rem; margin: 0.8rem 0;
+}
+.badge {
+  display: inline-block; font-size: 0.72rem; padding: 0.12rem 0.55rem; border-radius: 999px;
+  border: 1px solid var(--border); color: var(--muted);
+}
+.conf-measured { color: #22c55e; border-color: #22c55e55; }
+.conf-high { color: #38bdf8; border-color: #38bdf855; }
+.conf-medium { color: #f59e0b; border-color: #f59e0b55; }
+.conf-low { color: #f87171; border-color: #f8717155; }
+.chip {
+  display: inline-block; background: var(--code-bg); border: 1px solid var(--border);
+  border-radius: 6px; padding: 0.08rem 0.5rem; margin: 0.1rem 0.25rem 0.1rem 0;
+  font-size: 0.85rem;
+}
+blockquote {
+  margin: 0.6rem 0; padding: 0.4rem 0.9rem; border-left: 3px solid var(--accent);
+  color: var(--muted); background: var(--panel); border-radius: 0 6px 6px 0;
+}
+.callout {
+  padding: 0.6rem 0.9rem; border-radius: 8px; background: #f59e0b1a;
+  border: 1px solid #f59e0b55; margin: 0.8rem 0;
+}
+.callout ul { margin: 0.3rem 0 0; padding-left: 1.2rem; }
+details { margin: 0.6rem 0; }
+summary { cursor: pointer; color: var(--muted); }
+.bars { margin: 0.6rem 0 1rem; }
+.bar-row {
+  display: flex; align-items: center; gap: 0.6rem; margin: 0.25rem 0; font-size: 0.85rem;
+}
+.bar-label {
+  width: 9rem; flex: none; color: var(--muted); text-align: right;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.bar-track {
+  flex: 1; background: var(--code-bg); border-radius: 4px; overflow: hidden; height: 0.85rem;
+}
+.bar-fill { height: 100%; border-radius: 4px; }
+.bar-value { flex: none; width: 4.5rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.stack {
+  display: flex; height: 0.9rem; border-radius: 5px; overflow: hidden; margin: 0.5rem 0 0.9rem;
+}
+.legend {
+  display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; font-size: 0.82rem;
+  color: var(--muted); margin-bottom: 0.8rem;
+}
+.legend .swatch {
+  display: inline-block; width: 0.65em; height: 0.65em; border-radius: 2px;
+  margin-right: 0.35em; vertical-align: middle;
+}
+footer { margin-top: 3rem; color: var(--muted); font-size: 0.82rem; }
+</style>
+</head>
+<body>
+<main>
+<h1>Repository scan: Projects</h1><p class="path">Generated 2026-08-16T09:06:57+00:00 &middot; 5 repositories</p><table><thead><tr><th>Repository</th><th>Primary language</th><th class="num">Code lines</th><th class="num">Files</th><th class="num">Contributors</th><th class="num">Commits</th><th class="num">Bus factor</th></tr></thead><tbody><tr><td><a href="claude-architect-exam-guide/report.html"><strong>claude-architect-exam-guide</strong></a></td><td>—</td><td class="num">336</td><td class="num">4</td><td class="num">1</td><td class="num">2</td><td class="num">1</td></tr><tr><td><a href="hello-ai/report.html"><strong>hello-ai</strong></a></td><td>Python</td><td class="num">2,314</td><td class="num">51</td><td class="num">2</td><td class="num">28</td><td class="num">1</td></tr><tr><td><a href="hello-playwright/report.html"><strong>hello-playwright</strong></a></td><td>TypeScript</td><td class="num">250</td><td class="num">11</td><td class="num">1</td><td class="num">1</td><td class="num">1</td></tr><tr><td><a href="tenet/report.html"><strong>tenet</strong></a></td><td>Python</td><td class="num">1,144</td><td class="num">26</td><td class="num">3</td><td class="num">18</td><td class="num">1</td></tr><tr><td><a href="trinkets/report.html"><strong>trinkets</strong></a></td><td>HTML</td><td class="num">9,534</td><td class="num">76</td><td class="num">2</td><td class="num">5</td><td class="num">1</td></tr></tbody></table>
+</main>
+</body>
+</html>

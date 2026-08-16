@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>hello-playwright — repostats</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #0f1115; --panel: #171a21; --border: #2a2f3a; --text: #e5e7eb;
+  --muted: #9aa3b2; --accent: #6366f1; --link: #7dd3fc; --code-bg: #11141a;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f8fafc; --panel: #ffffff; --border: #e2e8f0; --text: #0f172a;
+    --muted: #64748b; --accent: #4f46e5; --link: #0369a1; --code-bg: #f1f5f9;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 2rem 1.25rem 4rem; background: var(--bg); color: var(--text);
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+main { max-width: 980px; margin: 0 auto; }
+h1 { font-size: 1.7rem; margin: 0 0 0.35rem; }
+h2 {
+  font-size: 1.25rem; margin: 2.2rem 0 0.8rem;
+  padding-top: 0.6rem; border-top: 1px solid var(--border);
+}
+h3 { font-size: 1.02rem; margin: 1.4rem 0 0.6rem; color: var(--muted); }
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.path {
+  color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.85rem; word-break: break-all;
+}
+.crumbs { color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
+.crumbs a { margin-right: 0.15rem; }
+table { border-collapse: collapse; width: 100%; margin: 0.6rem 0 1rem; font-size: 0.92rem; }
+th, td {
+  border: 1px solid var(--border); padding: 0.4rem 0.65rem;
+  text-align: left; vertical-align: top;
+}
+th { background: var(--panel); font-weight: 600; }
+tr:nth-child(even) td { background: color-mix(in srgb, var(--panel) 55%, transparent); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88em; }
+code { background: var(--code-bg); border-radius: 3px; padding: 0.05em 0.35em; }
+a.filelink code { color: var(--link); }
+.card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+  padding: 1rem 1.2rem; margin: 0.8rem 0;
+}
+.badge {
+  display: inline-block; font-size: 0.72rem; padding: 0.12rem 0.55rem; border-radius: 999px;
+  border: 1px solid var(--border); color: var(--muted);
+}
+.conf-measured { color: #22c55e; border-color: #22c55e55; }
+.conf-high { color: #38bdf8; border-color: #38bdf855; }
+.conf-medium { color: #f59e0b; border-color: #f59e0b55; }
+.conf-low { color: #f87171; border-color: #f8717155; }
+.chip {
+  display: inline-block; background: var(--code-bg); border: 1px solid var(--border);
+  border-radius: 6px; padding: 0.08rem 0.5rem; margin: 0.1rem 0.25rem 0.1rem 0;
+  font-size: 0.85rem;
+}
+blockquote {
+  margin: 0.6rem 0; padding: 0.4rem 0.9rem; border-left: 3px solid var(--accent);
+  color: var(--muted); background: var(--panel); border-radius: 0 6px 6px 0;
+}
+.callout {
+  padding: 0.6rem 0.9rem; border-radius: 8px; background: #f59e0b1a;
+  border: 1px solid #f59e0b55; margin: 0.8rem 0;
+}
+.callout ul { margin: 0.3rem 0 0; padding-left: 1.2rem; }
+details { margin: 0.6rem 0; }
+summary { cursor: pointer; color: var(--muted); }
+.bars { margin: 0.6rem 0 1rem; }
+.bar-row {
+  display: flex; align-items: center; gap: 0.6rem; margin: 0.25rem 0; font-size: 0.85rem;
+}
+.bar-label {
+  width: 9rem; flex: none; color: var(--muted); text-align: right;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.bar-track {
+  flex: 1; background: var(--code-bg); border-radius: 4px; overflow: hidden; height: 0.85rem;
+}
+.bar-fill { height: 100%; border-radius: 4px; }
+.bar-value { flex: none; width: 4.5rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.stack {
+  display: flex; height: 0.9rem; border-radius: 5px; overflow: hidden; margin: 0.5rem 0 0.9rem;
+}
+.legend {
+  display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; font-size: 0.82rem;
+  color: var(--muted); margin-bottom: 0.8rem;
+}
+.legend .swatch {
+  display: inline-block; width: 0.65em; height: 0.65em; border-radius: 2px;
+  margin-right: 0.35em; vertical-align: middle;
+}
+footer { margin-top: 3rem; color: var(--muted); font-size: 0.82rem; }
+</style>
+</head>
+<body>
+<main>
+<div class="crumbs"><a href="../index.html">&larr; all repositories</a></div>
+<h1>Repository report: hello-playwright</h1>
+<div class="path">/Users/vijaychakravarthy/Projects/hello-playwright</div>
+<table><tbody><tr><td>Generated</td><td>2026-08-16T09:06:56+00:00</td></tr><tr><td>Analyser</td><td>repostats 0.1.0</td></tr><tr><td>Branch</td><td><code>main</code></td></tr><tr><td>HEAD</td><td><code>8158be27baf0</code></td></tr><tr><td>Remote</td><td>git@github.com:vijayrc/hello-playwright.git</td></tr></tbody></table>
+<h2>1. Programming languages</h2>
+<div class="stack"><div style="width:100.00%;background:#6366f1"></div></div><div class="legend"><span><span class="swatch" style="background:#6366f1"></span>TypeScript</span></div>
+<table><thead><tr><th>Language</th><th class="num">Files</th><th class="num">Code lines</th><th class="num">Share</th><th class="num">Comments</th><th class="num">Blank</th></tr></thead><tbody><tr><td>TypeScript</td><td class="num">3</td><td class="num">41</td><td class="num">100.0%</td><td class="num">48</td><td class="num">15</td></tr></tbody></table>
+<p><strong>Primary language:</strong> TypeScript (100.0% of source lines).</p>
+<p><strong>Config / markup files:</strong> Markdown (4), JSON (2), YAML (1), Unknown (1).</p>
+<h2>2. Build tooling and project model</h2>
+<table><thead><tr><th>Aspect</th><th>Finding</th></tr></thead><tbody><tr><td>Build tools</td><td>npm-compatible</td></tr><tr><td>Package managers</td><td>npm</td></tr><tr><td>PEP 517 backend</td><td>—</td></tr><tr><td>Project model</td><td>single project</td></tr><tr><td>CI systems</td><td>GitHub Actions</td></tr><tr><td>Containerised</td><td>no</td></tr></tbody></table>
+<p><strong>Manifests found:</strong> <a class="filelink" href="files/package.json.html"><code>package.json</code></a></p>
+<h2>3. Purpose and overall logic <span class="badge conf-low">low confidence — treat as a hint</span></h2>
+<p>hello-playwright is a TypeScript project. It looks like a cli tool, written mainly in TypeScript.</p>
+<p><strong>Detected project kind(s):</strong> <span class="chip">CLI tool</span></p>
+<p><strong>Recurring domain terms:</strong> <span class="chip">spec</span></p>
+<details><summary>Evidence</summary><ul><li>CLI framework referenced in source: click</li></ul></details>
+<h2>4. Contributors and commit timeframe</h2>
+<table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody><tr><td>Total commits (excl. merges)</td><td>1</td></tr><tr><td>Distinct authors</td><td>1</td></tr><tr><td>Active span</td><td>2026-03-31 → 2026-03-31</td></tr><tr><td>Days with commits</td><td>1</td></tr><tr><td>Bus factor</td><td>1</td></tr></tbody></table>
+<p><em>1 author(s) account for at least half of all commits; the single largest contributor made 100% of them.</em></p>
+<h3>Top contributors</h3>
+<table><thead><tr><th>Author</th><th class="num">Commits</th><th class="num">Share</th><th class="num">Insertions</th><th class="num">Deletions</th><th>Active</th></tr></thead><tbody><tr><td>Vijay Chakravarthy</td><td class="num">1</td><td class="num">100.0%</td><td class="num">252</td><td class="num">0</td><td>2026-03-31 → 2026-03-31</td></tr></tbody></table>
+<h3>Commits by year</h3>
+<div class="bars"><div class="bar-row"><div class="bar-label" title="2026">2026</div><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#6366f1"></div></div><div class="bar-value">1</div></div></div>
+<h2>5. Flow: entry to persistence <span class="badge conf-low">low confidence — treat as a hint</span></h2>
+<blockquote>Not enough structural signal to infer a meaningful flow. The repository has no recognisable layer directories, HTTP routes, or datastore dependencies — it is most likely a library or a flat script collection.</blockquote>
+<pre class="mono">flowchart LR
+    caller([&quot;Caller&quot;])
+
+
+    style caller fill:#eef2ff,stroke:#4f46e5,color:#1e1b4b</pre>
+<details><summary>How each node was identified</summary><ul><li><strong>Caller</strong><ul><li>entry into the program</li></ul></li></ul></details>
+<h2>6. External dependencies and infrastructure</h2>
+<h3>Systems this code talks to</h3>
+<table><thead><tr><th>Category</th><th>Systems</th></tr></thead><tbody><tr><td>Testing</td><td><span class="chip">Playwright</span></td></tr></tbody></table>
+<p><strong>Declared dependencies:</strong> 2 across all manifests.</p>
+<details><summary>Classified declared dependencies</summary><table><thead><tr><th>Package</th><th>Version</th><th>Category</th><th>Implies</th><th>Manifest</th></tr></thead><tbody><tr><td><code>@playwright/test</code></td><td>^1.58.2</td><td>testing</td><td>Playwright</td><td><a class="filelink" href="files/package.json.html"><code>package.json</code></a></td></tr></tbody></table></details>
+<h2>7. Size and structure</h2>
+<table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody><tr><td>Files analysed</td><td>11</td></tr><tr><td>Files skipped (binary, vendored, generated)</td><td>1</td></tr><tr><td>Total lines</td><td>340</td></tr><tr><td>Code lines</td><td>250</td></tr><tr><td>Comment lines</td><td>48</td></tr><tr><td>Blank lines</td><td>42</td></tr><tr><td>Comment ratio</td><td>16.1%</td></tr><tr><td>Classes / types</td><td>0</td></tr><tr><td>Functions / methods</td><td>0</td></tr><tr><td>HTTP endpoints</td><td>0</td></tr><tr><td>Repository size (analysed)</td><td>13.4 KB</td></tr></tbody></table>
+<h3>Largest source files</h3>
+<div class="bars"><div class="bar-row"><div class="bar-label" title="playwright.config.ts"><a class="filelink" href="files/playwright.config.ts.html">playwright.config.ts</a></div><div class="bar-track"><div class="bar-fill" style="width:100.0%;background:#6366f1"></div></div><div class="bar-value">79</div></div><div class="bar-row"><div class="bar-label" title="tests/example.spec.ts"><a class="filelink" href="files/tests/example.spec.ts.html">tests/example.spec.ts</a></div><div class="bar-track"><div class="bar-fill" style="width:22.8%;background:#22c55e"></div></div><div class="bar-value">18</div></div><div class="bar-row"><div class="bar-label" title="tests/seed.spec.ts"><a class="filelink" href="files/tests/seed.spec.ts.html">tests/seed.spec.ts</a></div><div class="bar-track"><div class="bar-fill" style="width:8.9%;background:#f59e0b"></div></div><div class="bar-value">7</div></div></div>
+<h2>8. Testing and coverage</h2>
+<table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody><tr><td>Test frameworks</td><td>Playwright</td></tr><tr><td>Coverage tooling configured</td><td>none</td></tr><tr><td>Test files</td><td>2</td></tr><tr><td>Source files (non-test)</td><td>1</td></tr><tr><td>Test-to-source file ratio</td><td>2.00</td></tr><tr><td>Test functions / cases</td><td>3</td></tr><tr><td>Lines of test code</td><td>15</td></tr><tr><td>Line coverage</td><td>not measured</td></tr></tbody></table>
+<blockquote>No coverage report or coverage tooling found. Coverage is not measured here because doing so means executing the repository&#x27;s test suite.</blockquote>
+<footer>Sections 3 and 5 are inferred from naming conventions, package metadata and declared dependencies — check the evidence blocks before relying on them.</footer>
+</main>
+</body>
+</html>

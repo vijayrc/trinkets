@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>src/tenet/plugins/ledger_plugin.py — tenet</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #0f1115; --panel: #171a21; --border: #2a2f3a; --text: #e5e7eb;
+  --muted: #9aa3b2; --accent: #6366f1; --link: #7dd3fc; --code-bg: #11141a;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f8fafc; --panel: #ffffff; --border: #e2e8f0; --text: #0f172a;
+    --muted: #64748b; --accent: #4f46e5; --link: #0369a1; --code-bg: #f1f5f9;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 2rem 1.25rem 4rem; background: var(--bg); color: var(--text);
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+main { max-width: 980px; margin: 0 auto; }
+h1 { font-size: 1.7rem; margin: 0 0 0.35rem; }
+h2 {
+  font-size: 1.25rem; margin: 2.2rem 0 0.8rem;
+  padding-top: 0.6rem; border-top: 1px solid var(--border);
+}
+h3 { font-size: 1.02rem; margin: 1.4rem 0 0.6rem; color: var(--muted); }
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.path {
+  color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.85rem; word-break: break-all;
+}
+.crumbs { color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
+.crumbs a { margin-right: 0.15rem; }
+table { border-collapse: collapse; width: 100%; margin: 0.6rem 0 1rem; font-size: 0.92rem; }
+th, td {
+  border: 1px solid var(--border); padding: 0.4rem 0.65rem;
+  text-align: left; vertical-align: top;
+}
+th { background: var(--panel); font-weight: 600; }
+tr:nth-child(even) td { background: color-mix(in srgb, var(--panel) 55%, transparent); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88em; }
+code { background: var(--code-bg); border-radius: 3px; padding: 0.05em 0.35em; }
+a.filelink code { color: var(--link); }
+.card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+  padding: 1rem 1.2rem; margin: 0.8rem 0;
+}
+.badge {
+  display: inline-block; font-size: 0.72rem; padding: 0.12rem 0.55rem; border-radius: 999px;
+  border: 1px solid var(--border); color: var(--muted);
+}
+.conf-measured { color: #22c55e; border-color: #22c55e55; }
+.conf-high { color: #38bdf8; border-color: #38bdf855; }
+.conf-medium { color: #f59e0b; border-color: #f59e0b55; }
+.conf-low { color: #f87171; border-color: #f8717155; }
+.chip {
+  display: inline-block; background: var(--code-bg); border: 1px solid var(--border);
+  border-radius: 6px; padding: 0.08rem 0.5rem; margin: 0.1rem 0.25rem 0.1rem 0;
+  font-size: 0.85rem;
+}
+blockquote {
+  margin: 0.6rem 0; padding: 0.4rem 0.9rem; border-left: 3px solid var(--accent);
+  color: var(--muted); background: var(--panel); border-radius: 0 6px 6px 0;
+}
+.callout {
+  padding: 0.6rem 0.9rem; border-radius: 8px; background: #f59e0b1a;
+  border: 1px solid #f59e0b55; margin: 0.8rem 0;
+}
+.callout ul { margin: 0.3rem 0 0; padding-left: 1.2rem; }
+details { margin: 0.6rem 0; }
+summary { cursor: pointer; color: var(--muted); }
+.bars { margin: 0.6rem 0 1rem; }
+.bar-row {
+  display: flex; align-items: center; gap: 0.6rem; margin: 0.25rem 0; font-size: 0.85rem;
+}
+.bar-label {
+  width: 9rem; flex: none; color: var(--muted); text-align: right;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.bar-track {
+  flex: 1; background: var(--code-bg); border-radius: 4px; overflow: hidden; height: 0.85rem;
+}
+.bar-fill { height: 100%; border-radius: 4px; }
+.bar-value { flex: none; width: 4.5rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.stack {
+  display: flex; height: 0.9rem; border-radius: 5px; overflow: hidden; margin: 0.5rem 0 0.9rem;
+}
+.legend {
+  display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; font-size: 0.82rem;
+  color: var(--muted); margin-bottom: 0.8rem;
+}
+.legend .swatch {
+  display: inline-block; width: 0.65em; height: 0.65em; border-radius: 2px;
+  margin-right: 0.35em; vertical-align: middle;
+}
+footer { margin-top: 3rem; color: var(--muted); font-size: 0.82rem; }
+
+.src {
+  width: 100%; border-collapse: collapse;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85rem;
+}
+.src td { border: none; padding: 0 0.6rem; white-space: pre; }
+.src tr:target, .src tr.hl { background: #f59e0b2a; }
+.src td.ln { color: var(--muted); text-align: right; user-select: none; width: 1%; }
+.src td.code { white-space: pre-wrap; word-break: break-word; }
+</style>
+</head>
+<body>
+<main>
+<div class="crumbs"><a href="../../../../../index.html">&larr; all repositories</a> &nbsp;/&nbsp; <a href="../../../../report.html">&larr; tenet report</a></div><h1>src/tenet/plugins/ledger_plugin.py</h1><table class="src"><tbody><tr id="L1"><td class="ln">1</td><td class="code">import logging</td></tr><tr id="L2"><td class="ln">2</td><td class="code"></td></tr><tr id="L3"><td class="ln">3</td><td class="code">import requests</td></tr><tr id="L4"><td class="ln">4</td><td class="code">from tenet.utils import default_label</td></tr><tr id="L5"><td class="ln">5</td><td class="code">from requests.auth import HTTPBasicAuth</td></tr><tr id="L6"><td class="ln">6</td><td class="code">from strands import Agent, tool</td></tr><tr id="L7"><td class="ln">7</td><td class="code">from strands.hooks import AfterToolCallEvent, BeforeToolCallEvent</td></tr><tr id="L8"><td class="ln">8</td><td class="code">from strands.plugins import Plugin, hook</td></tr><tr id="L9"><td class="ln">9</td><td class="code"></td></tr><tr id="L10"><td class="ln">10</td><td class="code">logging.basicConfig(</td></tr><tr id="L11"><td class="ln">11</td><td class="code">    filename=&#x27;tenet.log&#x27;,</td></tr><tr id="L12"><td class="ln">12</td><td class="code">    filemode=&#x27;a&#x27;,</td></tr><tr id="L13"><td class="ln">13</td><td class="code">    format=&#x27;%(asctime)s - %(name)s - %(levelname)s - %(message)s&#x27;,</td></tr><tr id="L14"><td class="ln">14</td><td class="code">    level=logging.INFO</td></tr><tr id="L15"><td class="ln">15</td><td class="code">)</td></tr><tr id="L16"><td class="ln">16</td><td class="code"></td></tr><tr id="L17"><td class="ln">17</td><td class="code">class LedgerPlugin(Plugin):</td></tr><tr id="L18"><td class="ln">18</td><td class="code">    &quot;&quot;&quot;Plugin that exposes Mambu General Ledger API operations as agent tools.&quot;&quot;&quot;</td></tr><tr id="L19"><td class="ln">19</td><td class="code"></td></tr><tr id="L20"><td class="ln">20</td><td class="code">    name = &quot;ledger-plugin&quot;</td></tr><tr id="L21"><td class="ln">21</td><td class="code">    log = logging.getLogger(&quot;LedgerPlugin&quot;)</td></tr><tr id="L22"><td class="ln">22</td><td class="code"></td></tr><tr id="L23"><td class="ln">23</td><td class="code">    def init_agent(self, agent: &quot;Agent&quot;) -&gt; None:</td></tr><tr id="L24"><td class="ln">24</td><td class="code">        self.tenant = agent.state.get(&quot;tenant&quot;)</td></tr><tr id="L25"><td class="ln">25</td><td class="code">        self.user = agent.state.get(&quot;user&quot;)</td></tr><tr id="L26"><td class="ln">26</td><td class="code">        self.password = agent.state.get(&quot;password&quot;)</td></tr><tr id="L27"><td class="ln">27</td><td class="code">        self.log.info(&quot;agent-init: tenant=%s user=%s&quot;, self.tenant, self.user)</td></tr><tr id="L28"><td class="ln">28</td><td class="code"></td></tr><tr id="L29"><td class="ln">29</td><td class="code">    # --- hooks ---</td></tr><tr id="L30"><td class="ln">30</td><td class="code"></td></tr><tr id="L31"><td class="ln">31</td><td class="code">    @hook</td></tr><tr id="L32"><td class="ln">32</td><td class="code">    def do_before_tool(self, event: BeforeToolCallEvent) -&gt; None:</td></tr><tr id="L33"><td class="ln">33</td><td class="code">        self.log.info(&quot;tool-start: %s | input: %s&quot;, event.tool_use[&#x27;name&#x27;], event.tool_use[&#x27;input&#x27;])</td></tr><tr id="L34"><td class="ln">34</td><td class="code"></td></tr><tr id="L35"><td class="ln">35</td><td class="code">    @hook</td></tr><tr id="L36"><td class="ln">36</td><td class="code">    def do_after_tool(self, event: AfterToolCallEvent) -&gt; None:</td></tr><tr id="L37"><td class="ln">37</td><td class="code">        self.log.info(&quot;tool-end: %s&quot;, event.tool_use[&#x27;name&#x27;])</td></tr><tr id="L38"><td class="ln">38</td><td class="code"></td></tr><tr id="L39"><td class="ln">39</td><td class="code">    # --- private helpers ---</td></tr><tr id="L40"><td class="ln">40</td><td class="code"></td></tr><tr id="L41"><td class="ln">41</td><td class="code">    def _url(self, path: str) -&gt; str:</td></tr><tr id="L42"><td class="ln">42</td><td class="code">        return f&quot;https://{self.tenant}.mambu.com/api/{path}&quot;</td></tr><tr id="L43"><td class="ln">43</td><td class="code"></td></tr><tr id="L44"><td class="ln">44</td><td class="code">    def _headers(self) -&gt; dict:</td></tr><tr id="L45"><td class="ln">45</td><td class="code">        return {</td></tr><tr id="L46"><td class="ln">46</td><td class="code">            &#x27;Accept&#x27;: &#x27;application/vnd.mambu.v2+json&#x27;,</td></tr><tr id="L47"><td class="ln">47</td><td class="code">            &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,</td></tr><tr id="L48"><td class="ln">48</td><td class="code">            &#x27;Idempotency-Key&#x27;: str(uuid.uuid4())</td></tr><tr id="L49"><td class="ln">49</td><td class="code">        }</td></tr><tr id="L50"><td class="ln">50</td><td class="code"></td></tr><tr id="L51"><td class="ln">51</td><td class="code">    def _auth(self) -&gt; HTTPBasicAuth:</td></tr><tr id="L52"><td class="ln">52</td><td class="code">        return HTTPBasicAuth(self.user, self.password)</td></tr><tr id="L53"><td class="ln">53</td><td class="code"></td></tr><tr id="L54"><td class="ln">54</td><td class="code">    def _get(self, path: str) -&gt; dict:</td></tr><tr id="L55"><td class="ln">55</td><td class="code">        url = self._url(path)</td></tr><tr id="L56"><td class="ln">56</td><td class="code">        self.log.info(&quot;GET %s&quot;, url)</td></tr><tr id="L57"><td class="ln">57</td><td class="code">        response = requests.get(url, auth=self._auth(), headers=self._headers())</td></tr><tr id="L58"><td class="ln">58</td><td class="code">        self.log.info(&quot;response: code=%s body=%s&quot;, response.status_code, response.json())</td></tr><tr id="L59"><td class="ln">59</td><td class="code">        return response.json()</td></tr><tr id="L60"><td class="ln">60</td><td class="code"></td></tr><tr id="L61"><td class="ln">61</td><td class="code">    def _post(self, path: str, payload: dict) -&gt; dict:</td></tr><tr id="L62"><td class="ln">62</td><td class="code">        url = self._url(path)</td></tr><tr id="L63"><td class="ln">63</td><td class="code">        self.log.info(&quot;POST %s payload=%s&quot;, url, payload)</td></tr><tr id="L64"><td class="ln">64</td><td class="code">        response = requests.post(url, auth=self._auth(), headers=self._headers(), json=payload)</td></tr><tr id="L65"><td class="ln">65</td><td class="code">        self.log.info(&quot;response: code=%s body=%s&quot;, response.status_code, response.json())</td></tr><tr id="L66"><td class="ln">66</td><td class="code">        return response.json()</td></tr><tr id="L67"><td class="ln">67</td><td class="code"></td></tr><tr id="L68"><td class="ln">68</td><td class="code">    # --- tools ---</td></tr><tr id="L69"><td class="ln">69</td><td class="code"></td></tr><tr id="L70"><td class="ln">70</td><td class="code">    @tool</td></tr><tr id="L71"><td class="ln">71</td><td class="code">    def call_get_all_gl_accounts(self) -&gt; dict:</td></tr><tr id="L72"><td class="ln">72</td><td class="code">        &quot;&quot;&quot;Fetch all general ledger accounts.</td></tr><tr id="L73"><td class="ln">73</td><td class="code">           API: https://docs.mambu.com/api/api-v2/glaccounts/get-all/</td></tr><tr id="L74"><td class="ln">74</td><td class="code">        &quot;&quot;&quot;</td></tr><tr id="L75"><td class="ln">75</td><td class="code">        return self._get(&quot;glaccounts&quot;)</td></tr><tr id="L76"><td class="ln">76</td><td class="code"></td></tr><tr id="L77"><td class="ln">77</td><td class="code">    @tool</td></tr><tr id="L78"><td class="ln">78</td><td class="code">    def call_get_gl_account(self, gl_account_id: str) -&gt; dict:</td></tr><tr id="L79"><td class="ln">79</td><td class="code">        &quot;&quot;&quot;Fetch a general ledger account by ID.</td></tr><tr id="L80"><td class="ln">80</td><td class="code">           API: https://docs.mambu.com/api/api-v2/glaccounts/get-by-id/</td></tr><tr id="L81"><td class="ln">81</td><td class="code"></td></tr><tr id="L82"><td class="ln">82</td><td class="code">        Args:</td></tr><tr id="L83"><td class="ln">83</td><td class="code">            gl_account_id: The general ledger account ID to fetch</td></tr><tr id="L84"><td class="ln">84</td><td class="code">        &quot;&quot;&quot;</td></tr><tr id="L85"><td class="ln">85</td><td class="code">        return self._get(f&quot;glaccounts/{gl_account_id}&quot;)</td></tr><tr id="L86"><td class="ln">86</td><td class="code"></td></tr><tr id="L87"><td class="ln">87</td><td class="code">    @tool</td></tr><tr id="L88"><td class="ln">88</td><td class="code">    def call_create_gl_account(self, name: str = &quot;&quot;, account_type: str = &quot;ASSET&quot;, currency_code: str = &quot;USD&quot;) -&gt; dict:</td></tr><tr id="L89"><td class="ln">89</td><td class="code">        &quot;&quot;&quot;Create a new general ledger account.</td></tr><tr id="L90"><td class="ln">90</td><td class="code">           API: https://docs.mambu.com/api/api-v2/glaccounts/create/</td></tr><tr id="L91"><td class="ln">91</td><td class="code"></td></tr><tr id="L92"><td class="ln">92</td><td class="code">        Args:</td></tr><tr id="L93"><td class="ln">93</td><td class="code">            name: The name of the GL account (generated if not provided)</td></tr><tr id="L94"><td class="ln">94</td><td class="code">            account_type: Type of GL account — ASSET, LIABILITY, EQUITY, INCOME, or EXPENSE</td></tr><tr id="L95"><td class="ln">95</td><td class="code">            currency_code: ISO 4217 currency code (e.g. USD, EUR, GBP)</td></tr><tr id="L96"><td class="ln">96</td><td class="code">        &quot;&quot;&quot;</td></tr><tr id="L97"><td class="ln">97</td><td class="code">        name = default_label(name, &quot;tenet_gl_account&quot;)</td></tr><tr id="L98"><td class="ln">98</td><td class="code">        payload = {</td></tr><tr id="L99"><td class="ln">99</td><td class="code">            &quot;name&quot;: name,</td></tr><tr id="L100"><td class="ln">100</td><td class="code">            &quot;type&quot;: account_type,</td></tr><tr id="L101"><td class="ln">101</td><td class="code">            &quot;currency&quot;: {</td></tr><tr id="L102"><td class="ln">102</td><td class="code">                &quot;code&quot;: currency_code,</td></tr><tr id="L103"><td class="ln">103</td><td class="code">                &quot;currencyCode&quot;: currency_code</td></tr><tr id="L104"><td class="ln">104</td><td class="code">            },</td></tr><tr id="L105"><td class="ln">105</td><td class="code">            &quot;description&quot;: &quot;tenet-test ledger account&quot;,</td></tr><tr id="L106"><td class="ln">106</td><td class="code">            &quot;glCode&quot;: &quot;3200&quot;,</td></tr><tr id="L107"><td class="ln">107</td><td class="code">            &quot;usage&quot;: &quot;DETAIL&quot;,</td></tr><tr id="L108"><td class="ln">108</td><td class="code">            &quot;stripTrailingZeros&quot;: True,</td></tr><tr id="L109"><td class="ln">109</td><td class="code">            &quot;allowManualJournalEntries&quot;: True</td></tr><tr id="L110"><td class="ln">110</td><td class="code">        }</td></tr><tr id="L111"><td class="ln">111</td><td class="code">        return self._post(&quot;glaccounts&quot;, payload)</td></tr></tbody></table>
+</main>
+</body>
+</html>
