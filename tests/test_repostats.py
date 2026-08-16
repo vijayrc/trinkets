@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 from trinkets.repostats import analyse_repository
+from trinkets.repostats.multi import discover_repos, scan
 from trinkets.repostats.probes.codestats import _blank_comments
 from trinkets.repostats.render import render_json, render_markdown
 
@@ -265,3 +266,92 @@ def test_gitignored_files_are_excluded(make_repo):
     (repo / "secret.py").write_text("class Secret:\n    pass\n", encoding="utf-8")
     report = analyse_repository(repo)
     assert report.code.classes == 0
+
+
+# --- multi-repo scan -------------------------------------------------------
+
+
+def test_discover_repos_finds_siblings_and_skips_non_repos(make_repo, tmp_path):
+    make_repo({"a.py": "x = 1\n"}, name="repo-a")
+    make_repo({"b.py": "x = 1\n"}, name="repo-b")
+    (tmp_path / "not-a-repo").mkdir()
+    (tmp_path / "not-a-repo" / "readme.txt").write_text("hi\n", encoding="utf-8")
+
+    found = discover_repos(tmp_path)
+    assert {p.name for p in found} == {"repo-a", "repo-b"}
+
+
+def test_discover_repos_treats_root_itself_as_a_repo(make_repo):
+    repo = make_repo({"a.py": "x = 1\n"}, name="solo")
+    assert discover_repos(repo) == [repo]
+
+
+def test_discover_repos_does_not_descend_past_max_depth(make_repo, tmp_path):
+    nested_parent = tmp_path / "one" / "two" / "three"
+    nested_parent.mkdir(parents=True)
+    make_repo({"a.py": "x = 1\n"}, name="one/two/three/deep")
+
+    assert discover_repos(tmp_path, max_depth=1) == []
+    assert len(discover_repos(tmp_path, max_depth=6)) == 1
+
+
+def test_scan_writes_index_and_per_repo_report(make_repo, tmp_path):
+    make_repo({
+        "pyproject.toml": '[project]\nname = "a"\ndependencies = ["flask"]\n',
+        "app.py": "from flask import Flask\napp = Flask(__name__)\n",
+    }, name="repo-a")
+    make_repo({"b.py": "class B:\n    pass\n"}, name="repo-b")
+
+    output_dir = tmp_path / "report"
+    entries, written_to = scan(tmp_path, output_dir)
+
+    assert written_to == output_dir.resolve()
+    assert {e.slug for e in entries} == {"repo-a", "repo-b"}
+    assert all(e.report is not None and e.error is None for e in entries)
+
+    index_html = (output_dir / "index.html").read_text(encoding="utf-8")
+    assert "repo-a" in index_html and "repo-b" in index_html
+    assert (output_dir / "repo-a" / "report.html").exists()
+    assert (output_dir / "repo-b" / "report.html").exists()
+
+
+def test_scan_generates_a_source_page_for_a_referenced_manifest(make_repo, tmp_path):
+    make_repo({
+        "pyproject.toml": '[project]\nname = "a"\ndependencies = ["flask"]\n',
+        "app.py": "from flask import Flask\napp = Flask(__name__)\n",
+    }, name="repo-a")
+
+    output_dir = tmp_path / "report"
+    entries, _ = scan(tmp_path, output_dir)
+
+    manifest_page = output_dir / "repo-a" / "files" / "pyproject.toml.html"
+    assert manifest_page.exists()
+    assert "dependencies" in manifest_page.read_text(encoding="utf-8")
+
+    report_html = (output_dir / "repo-a" / "report.html").read_text(encoding="utf-8")
+    assert "files/pyproject.toml.html" in report_html
+
+
+def test_scan_records_errors_without_aborting(make_repo, tmp_path, monkeypatch):
+    make_repo({"a.py": "x = 1\n"}, name="repo-a")
+    make_repo({"b.py": "x = 1\n"}, name="repo-b")
+
+    import trinkets.repostats.multi as multi_module
+
+    real_analyse = multi_module.analyse_repository
+
+    def flaky_analyse(repo_path, **kwargs):
+        if repo_path.name == "repo-b":
+            raise multi_module.GitError("simulated failure")
+        return real_analyse(repo_path, **kwargs)
+
+    monkeypatch.setattr(multi_module, "analyse_repository", flaky_analyse)
+
+    entries, output_dir = scan(tmp_path, tmp_path / "report")
+
+    by_slug = {e.slug: e for e in entries}
+    assert by_slug["repo-a"].report is not None
+    assert by_slug["repo-b"].error == "simulated failure"
+    assert (output_dir / "repo-a" / "report.html").exists()
+    assert not (output_dir / "repo-b").exists()
+    assert (output_dir / "index.html").exists()
